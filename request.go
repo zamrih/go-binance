@@ -83,3 +83,21 @@ func WithRecvWindow(recvWindow int64) RequestOption {
 		r.recvWindow = recvWindow
 	}
 }
+
+// WithHeader set or add a header value to the request
+func WithHeader(key, value string, replace bool) RequestOption {
+	return func(r *request) {
+		if replace {
+			r.header.Set(key, value)
+		} else {
+			r.header.Add(key, value)
+		}
+	}
+}
+
+// WithHeaders set or replace the headers of the request
+func WithHeaders(header http.Header) RequestOption {
+	return func(r *request) {
+		r.header = header.Clone()
+	}
+}
